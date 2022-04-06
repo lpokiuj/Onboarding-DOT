@@ -24,9 +24,6 @@ export class UsersService {
 
     // Save account
     const user = this.usersRepository.create(createUserRegisterDto);
-    user.is_admin = false;
-    user.created_at = new Date();
-    user.updated_at = new Date();
     
     this.usersRepository.save(user);
 

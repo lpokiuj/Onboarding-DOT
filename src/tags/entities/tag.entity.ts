@@ -1,15 +1,12 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
-export class Studio {
+export class Tag {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  studio_number: number;
-
-  @Column()
-  seat_capacity: number;
+  name: string;
 
   @CreateDateColumn({
     type: 'timestamp',

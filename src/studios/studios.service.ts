@@ -15,8 +15,6 @@ export class StudiosService {
     
     // Save Studio
     const studio = this.studioRepository.create(createStudioDto);
-    studio.created_at = new Date();
-    studio.updated_at = new Date();
 
     this.studioRepository.save(studio);
 
@@ -37,8 +35,15 @@ export class StudiosService {
     return this.studioRepository.find();
   }
 
-  async getByID(id: string){
+  async getByID(id: string | number){
     
+    // For schedule
+    if(typeof id === 'number'){
+      const studio = await this.studioRepository.findOne(id);
+      return studio;
+    }
+
+
     const studio = await this.studioRepository.findOne(id);
 
     // If studio not found

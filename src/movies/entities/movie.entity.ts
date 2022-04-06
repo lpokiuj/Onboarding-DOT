@@ -1,4 +1,6 @@
-import { Column, Entity, IsNull, PrimaryGeneratedColumn } from 'typeorm';
+import { join } from 'path';
+import { Tag } from 'src/tags/entities/tag.entity';
+import { Column, CreateDateColumn, Entity, IsNull, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class Movie {
@@ -14,12 +16,20 @@ export class Movie {
   @Column()
   play_until: Date;
 
-  @Column()
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
   created_at: Date;
 
-  @Column()
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    onUpdate: 'CURRENT_TIMESTAMP(6)',
+  })
   updated_at: Date;
 
-  @Column({ nullable: true })
-  deleted_at: Date;
+  @ManyToMany(() => Tag)
+  @JoinTable()
+  tags: Tag[]
 }

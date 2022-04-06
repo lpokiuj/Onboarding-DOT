@@ -6,4 +6,8 @@ export class CreateMovieDto {
 
   @IsNotEmpty()
   overview: string;
+
+  @IsNotEmpty()
+  @IsString({ each: true })
+  tags: string[];
 }

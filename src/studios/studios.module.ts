@@ -7,6 +7,7 @@ import { Studio } from './entities/studio.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Studio])],
   controllers: [StudiosController],
-  providers: [StudiosService]
+  providers: [StudiosService],
+  exports: [StudiosService]
 })
 export class StudiosModule {}

@@ -1,5 +1,6 @@
 import { Body, HttpCode, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { TagsService } from 'src/tags/tags.service';
 import { Repository } from 'typeorm';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { Movie } from './entities/movie.entity';
@@ -10,25 +11,33 @@ export class MoviesService {
   constructor(
     @InjectRepository(Movie)
     private readonly movieRepository : Repository<Movie>,
+
+    private tagService : TagsService
   ){}
   
-  create(createMovieDto : CreateMovieDto){
+  async create(createMovieDto : CreateMovieDto){
     
+    const { tags, ...movieData } = createMovieDto;
+
     // Save Movie
-    const movie = this.movieRepository.create(createMovieDto);
-    movie.play_until = new Date();
-    movie.created_at = new Date();
-    movie.updated_at = new Date();
+    const movie = this.movieRepository.create(movieData);
+    
+    const createdTags = [];
+    for (const tag of tags) {
+      createdTags.push(await this.tagService.getByName(tag));
+    }
 
-    this.movieRepository.save(movie);
+    movie.tags = createdTags;
 
+    await this.movieRepository.save(movie);
+    
     const returnMsg = {
       success: true,
       data: {
         id: movie.id,
         title: movie.title,
         overview: movie.overview,
-        play_until: movie.play_until
+        tags: movie.tags
       },
       message: 'Movie Added'
     }
@@ -40,7 +49,13 @@ export class MoviesService {
     return this.movieRepository.find();
   }
 
-  async getByID(id: string){
+  async getByID(id: string | number){
+    
+    // For Schedule
+    if(typeof id === 'number'){
+      const movie = await this.movieRepository.findOne(id);
+      return movie;
+    }
 
     const movie = await this.movieRepository.findOne(id);
     
@@ -73,6 +88,5 @@ export class MoviesService {
     }
     return returnMsg;
   }
-
 
 }
