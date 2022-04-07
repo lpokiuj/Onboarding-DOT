@@ -57,7 +57,12 @@ export class SchedulesService {
     return this.scheduleRepository.find();
   }
 
-  async getByID(id: string){
+  async getByID(id: string | number){
+    if(typeof id === 'number'){
+      const schedule = await this.scheduleRepository.findOne(id);
+      return schedule;
+    }
+
     const schedule = await this.scheduleRepository.findOne(id);
     if(!schedule){
       throw new HttpException({

@@ -65,9 +65,32 @@ export class UsersService {
       data: {
         email: user.email,
         name: user.name,
-      },
+      }, 
       message: "Success login"
     }
     return returnMsg;
   }  
+
+  getAll(){
+    return this.usersRepository.find();
+  }
+  
+  async getByID(id: string | number){
+
+    if(typeof id === 'number'){
+      const user = await this.usersRepository.findOne(id);
+      return user;
+    }
+
+    const user = await this.usersRepository.findOne(id);
+    if(!user){
+      throw new HttpException({
+        status: HttpStatus.NOT_FOUND,
+        error: 'User not found'
+      }, HttpStatus.NOT_FOUND);
+    }
+
+    return user;
+  }
+
 }

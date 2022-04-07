@@ -5,6 +5,8 @@ import { MoviesModule } from './movies/movies.module';
 import { StudiosModule } from './studios/studios.module';
 import { SchedulesModule } from './schedules/schedules.module';
 import { TagsModule } from './tags/tags.module';
+import { OrdersModule } from './orders/orders.module';
+import { OrderItemsModule } from './order-items/order-items.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { TagsModule } from './tags/tags.module';
     StudiosModule,
     SchedulesModule,
     TagsModule,
+    OrdersModule,
+    OrderItemsModule,
   ],
 })
 export class AppModule {}
