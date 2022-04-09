@@ -7,6 +7,7 @@ import { SchedulesModule } from './schedules/schedules.module';
 import { TagsModule } from './tags/tags.module';
 import { OrdersModule } from './orders/orders.module';
 import { OrderItemsModule } from './order-items/order-items.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { OrderItemsModule } from './order-items/order-items.module';
     TagsModule,
     OrdersModule,
     OrderItemsModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
