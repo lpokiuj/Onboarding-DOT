@@ -39,7 +39,10 @@ export class SchedulesService {
       }, HttpStatus.NOT_FOUND);
     }
 
-    const schedule = this.scheduleRepository.create(scheduleDto);
+    const schedule = this.scheduleRepository.create({
+      ...scheduleDto,
+      date: new Date(new Date(scheduleDto.date).setHours(0, 0, 0, 0))
+    });
     schedule.movie_id = movieCheck;
     schedule.studio_id = studioCheck;
 

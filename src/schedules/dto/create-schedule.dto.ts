@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber } from "class-validator";
+import { IsISO8601, IsNotEmpty, IsNumber } from "class-validator";
 
 export class CreateScheduleDto {
   @IsNotEmpty()
@@ -10,6 +10,12 @@ export class CreateScheduleDto {
   @IsNotEmpty()
   @IsNumber()
   price: number;
+
+  @IsNotEmpty()
+  @IsISO8601({}, {
+    message: 'date must be YYYY-MM-DD'
+  })
+  date: string;
 
   @IsNotEmpty()
   @IsNumber()
