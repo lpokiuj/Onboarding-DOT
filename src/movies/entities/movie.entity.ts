@@ -1,6 +1,5 @@
-import { join } from 'path';
 import { Tag } from 'src/tags/entities/tag.entity';
-import { Column, CreateDateColumn, Entity, IsNull, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class Movie {

@@ -1,4 +1,4 @@
-import { Body, HttpCode, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TagsService } from 'src/tags/tags.service';
 import { Repository } from 'typeorm';
@@ -20,7 +20,10 @@ export class MoviesService {
     const { tags, ...movieData } = createMovieDto;
 
     // Save Movie
-    const movie = this.movieRepository.create(movieData);
+    const movie = this.movieRepository.create({
+      ...movieData,
+      play_until: new Date(new Date(movieData.play_until).setHours(0,0,0,0))
+    });
     
     const createdTags = [];
     for (const tag of tags) {
@@ -37,6 +40,7 @@ export class MoviesService {
         id: movie.id,
         title: movie.title,
         overview: movie.overview,
+        play_until: movie.play_until,
         tags: movie.tags
       },
       message: 'Movie Added'

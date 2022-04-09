@@ -74,5 +74,3 @@ Nest is [MIT licensed](LICENSE).
 
 ## Not done yet
 - Input photo
-- Date for Movies (play_until)
-- Date for Schedule

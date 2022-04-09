@@ -16,6 +16,9 @@ export class Schedule {
   @Column({ type: 'double' })
   price: number;
 
+  @Column()
+  date: Date;
+
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
