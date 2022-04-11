@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserLoginDto, CreateUserRegisterDto } from './dto/create-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -11,10 +11,10 @@ export class UsersService {
     private readonly usersRepository: Repository<User>,
   ) {}
 
-  async register(createUserRegisterDto: CreateUserRegisterDto){
+  async create(createUserDto: CreateUserDto){
 
     // Search for existed email
-    const emailExist = await this.usersRepository.findOne({ email: createUserRegisterDto.email });
+    const emailExist = await this.usersRepository.findOne({ email: createUserDto.email });
     if(emailExist){
       throw new HttpException({
         status: HttpStatus.BAD_REQUEST,
@@ -23,53 +23,12 @@ export class UsersService {
     }
 
     // Save account
-    const user = this.usersRepository.create(createUserRegisterDto);
+    const user = this.usersRepository.create(createUserDto);
     
-    this.usersRepository.save(user);
+    const savedUser = await this.usersRepository.save(user);
 
-    const returnMsg = {
-      success: true,
-      data: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-      },
-      message: "Success register"
-    }
-
-    return returnMsg;
+    return savedUser;
   }
-
-  async login(createUserLoginDto: CreateUserLoginDto){
-
-    // Check Email
-    const user = await this.usersRepository.findOne({ email: createUserLoginDto.email });
-    if(!user){
-      throw new HttpException({
-        status: HttpStatus.NOT_FOUND,
-        error: 'Email not found'
-      }, HttpStatus.NOT_FOUND);
-    }
-
-    // Check Password
-    if(user.password != createUserLoginDto.password){
-      throw new HttpException({
-        status: HttpStatus.FORBIDDEN,
-        error: 'Password not match'
-      }, HttpStatus.FORBIDDEN);
-    }
-
-    // Success
-    const returnMsg = {
-      success: true,
-      data: {
-        email: user.email,
-        name: user.name,
-      }, 
-      message: "Success login"
-    }
-    return returnMsg;
-  }  
 
   getAll(){
     return this.usersRepository.find();
@@ -90,6 +49,17 @@ export class UsersService {
       }, HttpStatus.NOT_FOUND);
     }
 
+    return user;
+  }
+
+  async getByEmail(email: string){
+    const user = await this.usersRepository.findOne({ email });
+    if(!user){
+      throw new HttpException({
+        status: HttpStatus.NOT_FOUND,
+        error: 'User not found'
+      }, HttpStatus.NOT_FOUND);
+    }
     return user;
   }
 
