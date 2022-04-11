@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { AdminGuard } from 'src/auth/guards/admin.guard';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { MoviesService } from './movies.service';
 
@@ -6,6 +7,7 @@ import { MoviesService } from './movies.service';
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
+  @UseGuards(AdminGuard)
   @Post()
   addMovie(@Body() createMovieDto : CreateMovieDto){
     return this.moviesService.create(createMovieDto);

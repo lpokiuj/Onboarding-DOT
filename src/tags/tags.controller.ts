@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { AdminGuard } from 'src/auth/guards/admin.guard';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { TagsService } from './tags.service';
 
@@ -6,6 +7,7 @@ import { TagsService } from './tags.service';
 export class TagsController {
   constructor(private readonly tagsService: TagsService) {}
 
+  @UseGuards(AdminGuard)
   @Post()
   addTag(@Body() createTagDto : CreateTagDto){
     return this.tagsService.create(createTagDto);

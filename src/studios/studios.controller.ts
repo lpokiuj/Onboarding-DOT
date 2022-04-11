@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { AdminGuard } from 'src/auth/guards/admin.guard';
 import { CreateStudioDto } from './dto/create-studio.dto';
 import { StudiosService } from './studios.service';
 
@@ -6,6 +7,7 @@ import { StudiosService } from './studios.service';
 export class StudiosController {
   constructor(private readonly studiosService: StudiosService) {}
 
+  @UseGuards(AdminGuard)
   @Post()
   createStudio(@Body() createStudioDto: CreateStudioDto){
     return this.studiosService.create(createStudioDto);
